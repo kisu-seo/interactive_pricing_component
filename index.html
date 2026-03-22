@@ -6,25 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive Pricing Component | 시니어 멘토 AI</title>
 
-  <!-- 브라우저에 Manrope 폰트를 불러옵니다. (건축으로 치면, 기본적인 철근과 시멘트 규격을 정하는 거예요) -->
+  <!-- Google 폰트: Manrope -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;800&display=swap" rel="stylesheet">
 
-  <!-- Tailwind CSS 스크립트 연결. 이것을 통해 클래스 이름만으로 디자인을 휙휙 입힐 수 있습니다. -->
+  <!-- Tailwind CSS (CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Tailwind의 🎨 컬러와 테마(디자인 시스템)를 설정하는 곳이에요! -->
+  <!-- Tailwind 환경 설정 -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            // 'font-sans' 클래스를 썼을 때 우리가 다운받은 Manrope 폰트가 적용되도록 해요.
             sans: ['Manrope', 'sans-serif'],
           },
           colors: {
-            // style-guide.md 에서 제공받은 색상들을 바로 쓸 수 있게 이름표를 달아주는 작업입니다.
+            // 프로젝트 공통 컬러 팔레트
             'soft-cyan': 'hsl(174, 77%, 80%)',
             'strong-cyan': 'hsl(174, 86%, 45%)',
             'light-red-bg': 'hsl(14, 92%, 95%)',
@@ -42,74 +41,56 @@
     }
   </script>
 
-  <!-- 슬라이더(Input Range)를 예쁘게 커스텀하기 위한 CSS 코드입니다. -->
-  <!-- 브라우저마다 슬라이더 원형이 다르게 생겨서, 기본 스타일을 빼내고 직접 옷을 입혀야 해요. (순정 커스텀 튜닝!) -->
+  <!-- 슬라이더 컴포넌트 커스텀 CSS -->
   <style>
-    /* 기본 브라우저 스타일들을 완전히 초기화 */
+    /* 기본 브라우저 스타일 초기화 (커스텀 스타일링을 위한 필수 전제조건) */
     input[type=range] {
       -webkit-appearance: none;
-      /* 크롬/사파리 등 webkit 브라우저에서 기본 슬라이더 모양을 지워요 */
       appearance: none;
-      /* 최신 브라우저를 위한 표준 속성을 추가합니다. */
       width: 100%;
-      /* 슬라이더 가로폭을 부모 요소에 꽉 차게 */
       background: transparent;
-      /* 트랙(선) 부분이 투명하게 (우리가 커스텀 할 거라서요!) */
     }
 
-    /* 포커스 될 때 나타나는 파란 테두리 지우기 */
     input[type=range]:focus {
       outline: none;
     }
 
-    /* 1. 크롬/사파리용 슬라이더 트랙 (손잡이가 움직이는 길) CSS */
+    /* Webkit - 슬라이더 트랙 */
     input[type=range]::-webkit-slider-runnable-track {
       width: 100%;
       height: 8px;
-      /* 길의 높이를 얇게 (8px) */
       cursor: pointer;
       border-radius: 999px;
-      /* 모서리를 아주 둥글게 */
-      /* 자바스크립트에서 건네받은 '--track-bg' 변수를 사용해서 동적으로 %에 맞춰 색을 채워줍니다! */
+      /* 🚨 [유지보수] 자바스크립트에서 주입해주는 '--track-bg' 변수로 동적 그라데이션을 채웁니다. */
       background: var(--track-bg, hsl(224, 65%, 95%));
     }
 
-    /* 2. 크롬/사파리용 슬라이더 손잡이(Thumb) CSS */
+    /* Webkit - 슬라이더 손잡이(Thumb) */
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
       height: 40px;
-      /* 요리조리 잡고 끄는 손잡이의 크기 (높이) */
       width: 40px;
-      /* 손잡이 너비 */
       border-radius: 50%;
-      /* 완전한 동그라미 모양 */
       background-color: hsl(174, 86%, 45%);
-      /* 쨍한 민트색(Strong cyan) */
-      /* 손잡이 안에 들어갈 화살표 아이콘 이미지. 요리 데코레이션 같은 거예요! */
       background-image: url('./images/icon-slider.svg');
       background-position: center;
       background-repeat: no-repeat;
       cursor: pointer;
-      /* (손잡이 높이 40px - 트랙 높이 8px) / 2 = 16px 만큼 위쪽으로 마이너스 해서 길 정중앙에 위치시킵니다. */
-      margin-top: -16px;
-      /* 마우스를 올렸을 때 민트색 그림자가 살포시 번지게 해 스포트라이트를 줍니다. */
+      margin-top: -16px; /* 트랙과 손잡이의 중앙 정렬을 위한 높이 계산값 */
       box-shadow: 0px 15px 30px rgba(16, 213, 194, 0.6);
       transition: background-color 0.3s ease;
-      /* 색상 변할 때 스르륵 (부드럽게) */
     }
 
-    /* 마우스 올릴 때(Hover) 약간 밝은 민트색으로 변화! */
     input[type=range]::-webkit-slider-thumb:hover {
       background-color: hsl(174, 77%, 80%);
     }
 
-    /* 마우스 꾹 누를 때(Active) 움켜쥔 손 모양 커서! */
     input[type=range]:active::-webkit-slider-thumb {
-      cursor: grabbing;
+      cursor: grabbing; /* 클릭 드래그 시 커서 피드백 제공 */
     }
 
-    /* 3. 모질라 파이어폭스 라이벌 브라우저를 위한 슬라이더 트랙 및 손잡이 동일 설정 */
+    /* Firefox - 슬라이더 트랙 및 손잡이 (크로스 브라우징을 위한 코드 중복) */
     input[type=range]::-moz-range-track {
       width: 100%;
       height: 8px;
@@ -135,85 +116,107 @@
     input[type=range]::-moz-range-thumb:hover {
       background-color: hsl(174, 77%, 80%);
     }
+
+    /* 🚨 [유지보수] 데스크탑 화면(md: 768px 이상)에서의 손잡이 3단계 색상 지정 (기본, 호버, 액티브) */
+    @media (min-width: 768px) {
+      /* Webkit 기반 브라우저 */
+      input[type=range]::-webkit-slider-thumb {
+        background-color: #10D8C4;
+      }
+      input[type=range]::-webkit-slider-thumb:hover {
+        background-color: #7AEADF;
+      }
+      input[type=range]:active::-webkit-slider-thumb {
+        background-color: #24AEA1;
+      }
+
+      /* Firefox 브라우저 */
+      input[type=range]::-moz-range-thumb {
+        background-color: #10D8C4;
+      }
+      input[type=range]::-moz-range-thumb:hover {
+        background-color: #7AEADF;
+      }
+      input[type=range]:active::-moz-range-thumb {
+        background-color: #24AEA1;
+      }
+    }
   </style>
 </head>
-
-<!-- min-h-screen으로 화면 전체를 덮고, 글꼴과 전체 배경색, 글색상을 세팅합니다. -->
 
 <body
   class="bg-[#fafbff] text-grayish-blue font-sans antialiased min-h-screen relative flex flex-col items-center overflow-x-hidden">
 
-  <!-- 배경에 구불구불한 옅은 패턴 배경 (요리의 예쁜 그릇 역할) -->
-  <div class="absolute top-0 left-0 w-full h-[400px] bg-[#f1f5fe] rounded-bl-[191.5px] z-[-2] overflow-hidden">
+  <!-- ========================================== -->
+  <!-- 1. 배경 레이어 (패턴 뷰 영역)                    -->
+  <!-- ========================================== -->
+  <div class="absolute top-0 left-0 w-full h-[400px] md:h-[449px] bg-[#f1f5fe] rounded-bl-[191.5px] z-[-2] overflow-hidden">
+    <!-- 🚨 [A11y] aria-hidden="true": 스크린 리더가 장식용 이미지를 무시하도록 숨김 처리 -->
     <img src="./images/bg-pattern.svg" alt="" aria-hidden="true" class="w-full h-full">
   </div>
 
-  <!-- [해더 섹션] 제목과 설명이 들어가는 부분 -->
+  <!-- ========================================== -->
+  <!-- 2. 헤더 섹션 (로고 및 설명 텍스트)                 -->
+  <!-- ========================================== -->
   <header
-    class="relative w-full max-w-[540px] px-6 text-center mt-0 mb-16 md:mb-24 flex flex-col justify-center items-center pt-[89px] pb-0 z-0">
-    <!-- 장식용 동그라미 무늬. 스크린 리더는 읽지 않도록 aria-hidden을 true로 줬어요 (접근성 고려) -->
+    class="relative w-full md:w-[395px] max-w-[540px] px-6 md:px-0 text-center mt-0 mb-16 md:mb-[92px] flex flex-col justify-center items-center pt-[89px] md:pt-[104px] pb-0 z-0">
+    <!-- 배경 원형 데코레이션 -->
     <img src="./images/pattern-circles.svg" alt="" aria-hidden="true" class="absolute z-[-1]">
 
-    <h1 class="text-[20px] md:text-[28px] font-extrabold text-dark-blue mb-2">
+    <h1 class="text-[20px] md:text-[28px] font-extrabold text-dark-blue mb-2 md:mb-[12px]">
       Simple, traffic-based pricing
     </h1>
-    <!-- 모바일에서는 글이 길면 끊어지도록 br 태그를 넣고, 데스크탑에선 쭉 뻗도록(md:hidden) 했습니다 -->
     <p class="text-[13px] md:text-[15px] max-w-[200px] md:max-w-none font-semibold text-[#848EAD] leading-6">
       Sign-up for our 30-day trial.<br class="md:hidden"> No credit card required.
     </p>
   </header>
 
-  <!-- [메인 가격 책정 카드] 기능과 디자인의 핵심 (Semantic 태그 사용으로 구조 명확화) -->
+  <!-- ========================================== -->
+  <!-- 3. 메인 가격 책정 컴포넌트 영역                    -->
+  <!-- ========================================== -->
   <main class="w-full px-6 z-10 pb-[88px] mt-0 md:mt-0">
 
-    <!-- section으로 의미론적 단위 분리, bg-white 카드 시작 -->
     <section
       class="w-full max-w-[540px] shadow-[0_20px_40px_-5px_rgba(200,200,200,0.3)] bg-white mx-auto rounded-lg pt-[34px] md:pt-10 mb-0 pb-8 flex flex-col">
 
-      <!-- 상단 블록 (조회수 텍스트, 슬라이더, 가격 배치) -->
-      <!-- CSS Grid를 사용해 모바일/데스크톱의 위치 변경을 아주 쉽게 조작합니다. (주소 변경 없이 블록 순서만 바꿈) -->
+      <!-- --------------------------------- -->
+      <!-- 블록 A: 상단 구역 (조회수, 슬라이더, 요금) -->
+      <!-- --------------------------------- -->
       <div
-        class="grid grid-cols-1 md:grid-cols-2 gap-y-[40px] md:gap-y-10 items-center justify-items-center md:justify-items-stretch px-6 md:px-10 mb-[34px] md:mb-8 w-full">
+        class="grid grid-cols-1 md:grid-cols-2 gap-y-[40px] md:mb-[56px] md:gap-y-10 items-center justify-items-center md:justify-items-stretch px-6 md:px-10 mb-[34px] w-full">
 
-        <!-- 조회수(Pageviews) 라벨 -->
-        <!-- md:justify-self-start로 데스크톱에선 맨 왼쪽으로 찰싹 붙음 -->
         <h2 id="pageviews-label"
           class="md:justify-self-start text-[12px] md:text-[14px] text-[#848EAD] tracking-[1.5px] md:tracking-[2px] font-extrabold uppercase row-start-1 md:col-start-1 md:row-start-1">
           <span id="pageviews">100K</span> PAGEVIEWS
         </h2>
 
-        <!-- 가격표 덩어리 -->
-        <!-- md:justify-self-end로 데스크톱에선 맨 오른쪽으로 찰싹 붙음 -->
+        <!-- 가격 출력 영역 -->
         <div id="price-container"
           class="md:justify-self-end flex items-center gap-[10px] justify-center font-extrabold text-dark-blue row-start-3 md:col-start-2 md:row-start-1">
           <span class="text-[32px] md:text-[40px] tracking-tight" id="price">$16.00</span>
-          <!-- aria-live로 스크린 리더에도 가격 변동을 즉시 알려줄 수 있습니다. 디자인상은 단순 회색 글씨 -->
           <span class="text-[14px] md:text-[16px] text-grayish-blue font-semibold whitespace-nowrap">/ month</span>
         </div>
 
-        <!-- 슬라이더 구역 -->
-        <!-- 모바일은 row-start-2로 무조건 2번째 줄, 데스크톱은 col-span-2로 줄 2칸을 혼자 다 차지하며 맨 아래(row-start-2)에 위치! -->
+        <!-- 슬라이더 바 구역 -->
         <div class="w-full relative col-span-1 md:col-span-2 row-start-2 md:row-start-2 flex items-center mt-0">
-          <!-- 접근성 A11y 포인트: aria-labelledby를 통해 어떤 라벨을 참조하는 입력칸인지 스크린 리더에 알립니다. -->
-          <input type="range" id="volume" min="0" /* 첫 번째 단계 (전체 단계는 0 ~ 4) */ max="4" step="1" /* 한 틱마다 1칸씩 움직이게 제한함
-            (=스무스하게 스크롤 안 됨) */ value="2" /* 기본값 100K (중앙) */ aria-labelledby="pageviews-label" class="w-full">
+          <!-- 🚨 [A11y] aria-labelledby: 어떤 제목(라벨)에 종속된 컨트롤인지 시맨틱 연결 구조를 확립함 -->
+          <input type="range" id="volume" min="0" max="4" step="1" value="2" aria-labelledby="pageviews-label" class="w-full">
         </div>
       </div>
 
-      <!-- 중단 블록 (토글 버튼) - 월간 vs 연간 결제 -->
+      <!-- --------------------------------- -->
+      <!-- 블록 B: 중단 구역 (월별/연간 결제 토글 버튼) -->
+      <!-- --------------------------------- -->
       <div
-        class="pl-[44px] pr-0 md:px-10 flex border-red items-center justify-start md:justify-center text-[12px] md:text-[14px] text-grayish-blue font-semibold mb-[38px] md:mb-10 w-full lg:-ml-2">
+        class="pl-[44px] pr-0 md:pl-[154px] md:pr-0 md:ml-0 flex border-red items-center justify-start text-[12px] md:text-[14px] text-grayish-blue font-semibold mb-[38px] md:mb-10 w-full">
         <span>Monthly Billing</span>
 
-        <!-- 토글 스위치 디자인 -->
+        <!-- 커스텀 토글 스위치 -->
+        <!-- 🚨 [유지보수] peer, peer-checked 기반의 JS 없는 상태 관리 체계를 이용한 CSS 토글이므로 HTML 구조(input - div 순서) 변경 금지 -->
         <label for="billing-toggle" class="relative inline-flex items-center cursor-pointer mx-3 md:mx-4">
-          <!-- 시력 저하 사용자를 위한 실제 체크박스는 보이지않게 sr-only(Screen Reader Only)로 숨깁니다. -->
-          <input type="checkbox" id="billing-toggle" class="sr-only peer" aria-label="연간 25% 할인 결제로 전환하기">
+          <!-- 🚨 [A11y] sr-only: 체크박스를 시각적으로는 지우지만 눈이 불편한 사용자의 스크린리더기는 작동하도록 접근성 방어 -->
+          <input type="checkbox" id="billing-toggle" class="sr-only peer" aria-label="연간 결제 할인 적용">
 
-          <!-- Tailwind의 'peer-checked' 시스템을 이용해 JS없이도 CSS만으로 토글 상태디자인을 자동완성해요 -->
-          <!-- 1. 기본 배경 옅은 파란-회색 -->
-          <!-- 2. peer-checked가 켜지면 테마 배경색 강한 민트색으로 스르륵(transition) 바뀜 -->
-          <!-- 3. 안에 동그라미(after)가 우측(translate-x-full)으로 이동함 -->
           <div class="w-11 h-6 bg-toggle-bg hover:bg-soft-cyan rounded-full peer peer-checked:after:translate-x-[18px] 
           after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:rounded-full after:h-[16px] after:w-[16px] 
           after:transition-transform duration-300 peer-checked:bg-strong-cyan"></div>
@@ -221,8 +224,7 @@
 
         <span class="flex items-center relative">
           Yearly Billing
-          <!-- 연간 결제로 인한 할인률 뱃지 -->
-          <!-- 모바일이면 '-25%'만 보여주고, 데스크톱(md:inline)이면 '25% discount'로 글씨를 길게 펼쳐요 -->
+          <!-- 연간 결제 할인율 뱃지 -->
           <span
             class="bg-light-red-bg text-light-red-text rounded-full text-[10px] font-extrabold px-[6px] py-[1.5px] ml-1.5 md:ml-2 absolute right-[-45px] md:right-[-90px] whitespace-nowrap">
             <span class="md:hidden">-25%</span>
@@ -231,16 +233,17 @@
         </span>
       </div>
 
-      <!-- 시각적으로 섹션을 가로지르는 긴 구분선 (디자인 요소) -->
+      <!-- 시각적 구분선 -->
       <div class="h-[1px] bg-empty-slider w-full mb-6 md:mb-8"></div>
 
-      <!-- 하단 블록 (기능 목록 & 구독 시작 버튼) -->
-      <div class="px-6 md:px-10 flex flex-col md:flex-row items-center justify-between text-[12px] md:text-[13px] pb-0">
+      <!-- --------------------------------- -->
+      <!-- 블록 C: 하단 구역 (기능 리스트, 구매 토큰 액션) -->
+      <!-- --------------------------------- -->
+      <div class="px-6 md:px-0 md:w-[448px] md:mx-auto flex flex-col md:flex-row items-center justify-between text-[12px] md:text-[13px] pb-0">
 
-        <!-- 기능 소개 리스트 (ul/li 시맨틱 마크업) -->
+        <!-- 기능 혜택 리스트 -->
         <ul class="flex flex-col gap-[11px] items-center md:items-start text-grayish-blue mb-8 md:mb-0 font-semibold">
           <li class="flex items-center gap-4">
-            <!-- 시각 효과에 불과한 아이콘은 aria-hidden으로 스크린리더에게 읽지 말라고 속삭입니다. -->
             <img src="./images/icon-check.svg" alt="" aria-hidden="true" class="w-2.5 h-2 mt-0.5">
             Unlimited websites
           </li>
@@ -254,10 +257,9 @@
           </li>
         </ul>
 
-        <!-- CTA 버튼 (Call To Action - 유인 버튼) -->
-        <!-- 마우스를 올리면 호버 효과(hover:text-white)로 글자가 쨍한 하얀색으로 변신! -->
+        <!-- 구독 시작 액션 버튼(CTA) -->
         <button
-          class="bg-dark-blue text-pale-blue w-[170px] h-[41px] rounded-full font-bold hover:text-white transition-colors duration-300 tracking-[0.5px]">
+          class="bg-dark-blue text-pale-blue w-[170px] h-[41px] rounded-full font-bold md:text-[12px] hover:text-white transition-colors duration-300 tracking-[0.5px]">
           Start my trial
         </button>
 
@@ -265,7 +267,7 @@
     </section>
   </main>
 
-  <!-- 방금 분리한 자바스크립트 파일을 불러옵니다 (모터 달아주기) -->
+  <!-- 기능 구현 파이프라인(스크립트) 불러오기 -->
   <script src="./main.js"></script>
 </body>
 
