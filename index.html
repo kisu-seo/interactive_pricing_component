@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Pricing Component | 시니어 멘토 AI</title>
+  <title>Interactive Pricing Component</title>
 
   <!-- Google 폰트: Manrope -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -77,7 +77,8 @@
       background-position: center;
       background-repeat: no-repeat;
       cursor: pointer;
-      margin-top: -16px; /* 트랙과 손잡이의 중앙 정렬을 위한 높이 계산값 */
+      margin-top: -16px;
+      /* 트랙과 손잡이의 중앙 정렬을 위한 높이 계산값 */
       box-shadow: 0px 15px 30px rgba(16, 213, 194, 0.6);
       transition: background-color 0.3s ease;
     }
@@ -87,7 +88,8 @@
     }
 
     input[type=range]:active::-webkit-slider-thumb {
-      cursor: grabbing; /* 클릭 드래그 시 커서 피드백 제공 */
+      cursor: grabbing;
+      /* 클릭 드래그 시 커서 피드백 제공 */
     }
 
     /* Firefox - 슬라이더 트랙 및 손잡이 (크로스 브라우징을 위한 코드 중복) */
@@ -119,13 +121,16 @@
 
     /* 🚨 [유지보수] 데스크탑 화면(md: 768px 이상)에서의 손잡이 3단계 색상 지정 (기본, 호버, 액티브) */
     @media (min-width: 768px) {
+
       /* Webkit 기반 브라우저 */
       input[type=range]::-webkit-slider-thumb {
         background-color: #10D8C4;
       }
+
       input[type=range]::-webkit-slider-thumb:hover {
         background-color: #7AEADF;
       }
+
       input[type=range]:active::-webkit-slider-thumb {
         background-color: #24AEA1;
       }
@@ -134,9 +139,11 @@
       input[type=range]::-moz-range-thumb {
         background-color: #10D8C4;
       }
+
       input[type=range]::-moz-range-thumb:hover {
         background-color: #7AEADF;
       }
+
       input[type=range]:active::-moz-range-thumb {
         background-color: #24AEA1;
       }
@@ -150,7 +157,8 @@
   <!-- ========================================== -->
   <!-- 1. 배경 레이어 (패턴 뷰 영역)                    -->
   <!-- ========================================== -->
-  <div class="absolute top-0 left-0 w-full h-[400px] md:h-[449px] bg-[#f1f5fe] rounded-bl-[191.5px] z-[-2] overflow-hidden">
+  <div
+    class="absolute top-0 left-0 w-full h-[400px] md:h-[449px] bg-[#f1f5fe] rounded-bl-[191.5px] z-[-2] overflow-hidden">
     <!-- 🚨 [A11y] aria-hidden="true": 스크린 리더가 장식용 이미지를 무시하도록 숨김 처리 -->
     <img src="./images/bg-pattern.svg" alt="" aria-hidden="true" class="w-full h-full">
   </div>
@@ -200,7 +208,8 @@
         <!-- 슬라이더 바 구역 -->
         <div class="w-full relative col-span-1 md:col-span-2 row-start-2 md:row-start-2 flex items-center mt-0">
           <!-- 🚨 [A11y] aria-labelledby: 어떤 제목(라벨)에 종속된 컨트롤인지 시맨틱 연결 구조를 확립함 -->
-          <input type="range" id="volume" min="0" max="4" step="1" value="2" aria-labelledby="pageviews-label" class="w-full">
+          <input type="range" id="volume" min="0" max="4" step="1" value="2" aria-labelledby="pageviews-label"
+            class="w-full">
         </div>
       </div>
 
@@ -239,7 +248,8 @@
       <!-- --------------------------------- -->
       <!-- 블록 C: 하단 구역 (기능 리스트, 구매 토큰 액션) -->
       <!-- --------------------------------- -->
-      <div class="px-6 md:px-0 md:w-[448px] md:mx-auto flex flex-col md:flex-row items-center justify-between text-[12px] md:text-[13px] pb-0">
+      <div
+        class="px-6 md:px-0 md:w-[448px] md:mx-auto flex flex-col md:flex-row items-center justify-between text-[12px] md:text-[13px] pb-0">
 
         <!-- 기능 혜택 리스트 -->
         <ul class="flex flex-col gap-[11px] items-center md:items-start text-grayish-blue mb-8 md:mb-0 font-semibold">
