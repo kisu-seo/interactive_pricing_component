@@ -25,7 +25,7 @@ The designs were created to the following widths:
 - Very Pale Blue (Main Background): hsl(230, 100%, 99%)
 - Light Grayish Blue (Empty Slider Bar): hsl(224, 65%, 95%)
 - Light Grayish Blue (Toggle Background): hsl(223, 50%, 87%)
-- Grayish Blue (Text): hsl(225, 20%, 60%)
+- Grayish Blue (Text): hsl(226, 20%, 60%)
 - Dark Desaturated Blue (Text & CTA Background): hsl(227, 35%, 25%)
 
 ## Typography
@@ -38,5 +38,3 @@ The designs were created to the following widths:
 
 - Family: [Manrope](https://fonts.google.com/specimen/Manrope)
 - Weights: 600, 800
-
-> 💎 [Upgrade to Pro](https://www.frontendmentor.io/pro?ref=style-guide) for design file access to see all details and get hands-on experience using a professional workflow with tools like Figma.
